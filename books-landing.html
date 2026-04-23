@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadership Books Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8cc84;
+    --dark: #001a3a;
+    --darker: #00112b;
+    --surface: #002050;
+    --text: #f0ece4;
+    --muted: #8a8578;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--darker);
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px 80px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .noise {
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .divider {
+    width: 48px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 20px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .books {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .book-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--surface);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 22px 24px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    animation: fadeUp 0.7s ease both;
+    overflow: hidden;
+  }
+
+  .book-card:nth-child(1) { animation-delay: 0.1s; }
+  .book-card:nth-child(2) { animation-delay: 0.22s; }
+  .book-card:nth-child(3) { animation-delay: 0.34s; }
+
+  .book-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .book-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .book-card:hover {
+    border-color: rgba(201,168,76,0.5);
+    transform: translateX(4px);
+    box-shadow: -4px 0 24px rgba(201,168,76,0.08), 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .book-card:hover::before { opacity: 1; }
+  .book-card:hover::after { opacity: 1; }
+
+  .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: rgba(201,168,76,0.25);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 44px;
+    text-align: center;
+    transition: color 0.3s;
+  }
+
+  .book-card:hover .num { color: rgba(201,168,76,0.6); }
+
+  .book-info { flex: 1; }
+
+  .book-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+
+  .book-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .arrow {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, border-color 0.3s;
+    color: var(--gold);
+  }
+
+  .book-card:hover .arrow {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--darker);
+  }
+
+  .arrow svg { width: 12px; height: 12px; }
+
+  footer {
+    margin-top: 64px;
+    text-align: center;
+    animation: fadeUp 0.7s 0.5s ease both;
+  }
+
+  .footer-line {
+    width: 32px;
+    height: 1px;
+    background: rgba(201,168,76,0.3);
+    margin: 0 auto 16px;
+  }
+
+  footer p {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+
+<header>
+  <p class="eyebrow">Essential Reading</p>
+  <h1>The Leadership<br><em>Collection</em></h1>
+  <div class="divider"></div>
+  <p class="subtitle">Three books · One vision</p>
+</header>
+
+<div class="books">
+
+  <a class="book-card" href="https://a.co/d/0cvDIxsO" target="_blank" rel="noopener">
+    <span class="num">1</span>
+    <div class="book-info">
+      <p class="book-label">Book One</p>
+      <p class="book-title">Future of Leadership</p>
+    </div>
+    <span class="arrow">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M2 6h8M6 2l4 4-4 4"/>
+      </svg>
+    </span>
+  </a>
+
+  <a class="book-card" href="https://a.co/d/08UF2Q6b" target="_blank" rel="noopener">
+    <span class="num">2</span>
+    <div class="book-info">
+      <p class="book-label">Book Two</p>
+      <p class="book-title">Embrace the Future</p>
+    </div>
+    <span class="arrow">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M2 6h8M6 2l4 4-4 4"/>
+      </svg>
+    </span>
+  </a>
+
+  <a class="book-card" href="https://a.co/d/0ggDJd0U" target="_blank" rel="noopener">
+    <span class="num">3</span>
+    <div class="book-info">
+      <p class="book-label">Book Three</p>
+      <p class="book-title">Unlock Your Relevance</p>
+    </div>
+    <span class="arrow">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M2 6h8M6 2l4 4-4 4"/>
+      </svg>
+    </span>
+  </a>
+
+</div>
+
+<footer>
+  <div class="footer-line"></div>
+  <p>Available on Amazon</p>
+</footer>
+
+</body>
+</html>
